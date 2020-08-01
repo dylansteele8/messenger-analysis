@@ -46,7 +46,7 @@ def analyze_messages():
 		# exists, sum all values together for that key
 		if (data['title']) != 'Facebook User':
 			if (data['title']) not in fb_conversations:
-					fb_conversations[data['title']] = count_values
+				fb_conversations[data['title']] = count_values
 			else:
 				fb_conversations[data['title']] = fb_conversations.get(data['title']) + count_values
 
