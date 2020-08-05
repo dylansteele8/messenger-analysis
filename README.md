@@ -15,7 +15,13 @@ pip install -r requirements.txt
 In the activated virtual environment, run the `main.py` script
 
 ```bash
-python main.py
+python main.py <path/to/inbox/directory>
+```
+
+Show the help message with
+
+```bash
+python main.py --help
 ```
 
 > **NOTE:** The downloaded Facebook data must be in the same directory as the `main.py` script at the path `messages/inbox`.

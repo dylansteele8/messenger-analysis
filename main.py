@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 import json
 import matplotlib.pyplot as plt
@@ -15,18 +16,14 @@ from collections import defaultdict
 #  |   |   |- file1.txt
 #  |- AnwellWang (folder)
 
-def analyze_messages():
+def analyze_messages(inbox_path):
 	# Create dictionary that will store chat title/volume as key/value pairing
 	# Each key will be initialized with a value of 0
 	fb_conversations = defaultdict(lambda: 0)
 
-	# Define root path
-	# TODO: User needs to replace root with their own file path
-	root = Path.cwd() / "messages" / "inbox"
-
 	# Access the first level of subfolder from "inbox"
 	# (e.g. "folder" == DylanSteele in the example above)
-	for folder in root.iterdir():
+	for folder in inbox_path.iterdir():
 		# Access the individuals .json files in each conversations "folder"
 		for message_file in folder.glob("*.json"):
 			with message_file.open() as f:
@@ -56,5 +53,21 @@ def analyze_messages():
 	plt.bar(x_axis, y_axis,width = 0.7, color=(0.1, 0.1, 0.1, 0.1), edgecolor='blue')
 	plt.show()
 
+def main():
+	parser = argparse.ArgumentParser(
+		description='Analyze Facebook Messenger message counts.'
+	)
+	parser.add_argument(
+		'inbox',
+		help='path to inbox directory',
+		# Resolve to an absolute path
+		type=lambda p: Path(p).resolve()
+	)
+	args = parser.parse_args()
+	print(f"Analyzing messages from {args.inbox}")
+	analyze_messages(args.inbox)
+
+
 if __name__ == "__main__":
-	analyze_messages()
+	main()
+
