@@ -3,6 +3,7 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 from heapq import nlargest
+from collections import defaultdict
 
 # messages/inbox
 #  |- DylanSteele (folder)
@@ -16,7 +17,8 @@ from heapq import nlargest
 
 def analyze_messages():
 	# Create dictionary that will store chat title/volume as key/value pairing
-	fb_conversations = {}
+	# Each key will be initialized with a value of 0
+	fb_conversations = defaultdict(lambda: 0)
 
 	# Define root path
 	# TODO: User needs to replace root with their own file path
@@ -25,23 +27,15 @@ def analyze_messages():
 	# Access the first level of subfolder from "inbox"
 	# (e.g. "folder" == DylanSteele in the example above)
 	for folder in root.iterdir():
-		count_values = 0
 		# Access the individuals .json files in each conversations "folder"
 		for message_file in folder.glob("*.json"):
 			with message_file.open() as f:
 				data = json.load(f)
-			
-			if 'messages' in data:
-				count_values += len(data['messages'])
-			
-			# Populates the fb_conversations dictionary with an active Facebook
-			# conversation. If a key representing conversations with users already
-			# exists, sum all values together for that key
-			if (data['title']) != 'Facebook User':
-				if (data['title']) not in fb_conversations:
-					fb_conversations[data['title']] = count_values
-				else:
-					fb_conversations[data['title']] = fb_conversations.get(data['title']) + count_values
+
+			# Check if the message is with an active Facebook user and add the
+			# new number of messages to the existing number of messages
+			if data['title'] != 'Facebook User' and 'messages' in data:
+				fb_conversations[data['title']] += len(data['messages'])
 
 	# extract the top 10 most messaged keys and place them in a new dictionary
 	ten_largest = nlargest(10, fb_conversations, key = fb_conversations.get)
