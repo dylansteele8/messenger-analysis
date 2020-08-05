@@ -17,6 +17,12 @@ from collections import defaultdict
 #  |- AnwellWang (folder)
 
 
+def nlargest_dict(n, d):
+    nlargest_keys = nlargest(n, d, key=d.get)
+    nlargest_values = [d[key] for key in nlargest_keys]
+    return (nlargest_keys, nlargest_values)
+
+
 def analyze_messages(inbox_path):
     # Create dictionary that will store chat title/volume as key/value pairing
     # Each key will be initialized with a value of 0
@@ -35,23 +41,19 @@ def analyze_messages(inbox_path):
             if data["title"] != "Facebook User" and "messages" in data:
                 fb_conversations[data["title"]] += len(data["messages"])
 
-    # extract the top 10 most messaged keys and place them in a new dictionary
-    ten_largest = nlargest(10, fb_conversations, key=fb_conversations.get)
-    graph = {}
-    for val in ten_largest:
-        graph[val] = fb_conversations.get(val)
-
-    # Put the top 10 most messaged individuals in a bar graph
-    n_groups = 10
-    index = np.arange(n_groups)
-    x_axis = graph.keys()
-    y_axis = graph.values()
+    nlargest_messages = nlargest_dict(10, fb_conversations)
     plt.ylabel("Number of Messages")
     plt.xlabel("Name")
     plt.title("Top 10 Most Messaged Recipients on Facebook", fontweight="bold")
     plt.yticks(size=8)
-    plt.xticks(index, size=8, rotation=25)
-    plt.bar(x_axis, y_axis, width=0.7, color=(0.1, 0.1, 0.1, 0.1), edgecolor="blue")
+    plt.xticks(size=8, rotation=25, ha="right")
+    plt.bar(
+        nlargest_messages[0],
+        nlargest_messages[1],
+        width=0.7,
+        color=(0.1, 0.1, 0.1, 0.1),
+        edgecolor="blue",
+    )
     plt.show()
 
 
