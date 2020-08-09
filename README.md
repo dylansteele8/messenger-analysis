@@ -25,3 +25,13 @@ python main.py --help
 ```
 
 > **NOTE:** The downloaded Facebook data must be in the same directory as the `main.py` script at the path `messages/inbox`.
+
+## Developing
+
+### Formating Code
+
+Code is formatted with [`black`](https://github.com/psf/black). Please format your code before creating a PR. In the activated virtual environment, run `black`
+
+```bash
+black main.py
+```
