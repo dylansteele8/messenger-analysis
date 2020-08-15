@@ -44,6 +44,9 @@ def analyze_messages(inbox_path, number_conversations):
     nlargest_messages = nlargest_dict(number_conversations, fb_conversations)
     plt.ylabel("Number of Messages")
     plt.xlabel("Name")
+    # There might be fewer than number_conversations so instead of labelling
+    # the graph with number_conversations we label with the true number of
+    # conversations that are going to be plotted.
     plt.title(
         f"Top {len(nlargest_messages[0])} Conversations by Message Count on Facebook",
         fontweight="bold",
