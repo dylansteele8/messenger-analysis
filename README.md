@@ -18,7 +18,7 @@ In the activated virtual environment, run the `main.py` script
 python main.py <path/to/inbox/directory>
 ```
 
-Show the help message with
+Show the help message and additional arguments with
 
 ```bash
 python main.py --help

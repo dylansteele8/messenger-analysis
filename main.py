@@ -23,7 +23,7 @@ def nlargest_dict(n, d):
     return (nlargest_keys, nlargest_values)
 
 
-def analyze_messages(inbox_path):
+def analyze_messages(inbox_path, number_conversations):
     # Create dictionary that will store chat title/volume as key/value pairing
     # Each key will be initialized with a value of 0
     fb_conversations = defaultdict(lambda: 0)
@@ -41,10 +41,16 @@ def analyze_messages(inbox_path):
             if data["title"] != "Facebook User" and "messages" in data:
                 fb_conversations[data["title"]] += len(data["messages"])
 
-    nlargest_messages = nlargest_dict(10, fb_conversations)
+    nlargest_messages = nlargest_dict(number_conversations, fb_conversations)
     plt.ylabel("Number of Messages")
     plt.xlabel("Name")
-    plt.title("Top 10 Most Messaged Recipients on Facebook", fontweight="bold")
+    # There might be fewer than number_conversations so instead of labelling
+    # the graph with number_conversations we label with the true number of
+    # conversations that are going to be plotted.
+    plt.title(
+        f"Top {len(nlargest_messages[0])} Conversations by Message Count on Facebook",
+        fontweight="bold",
+    )
     plt.yticks(size=8)
     plt.xticks(size=8, rotation=25, ha="right")
     plt.bar(
@@ -67,9 +73,12 @@ def main():
         # Resolve to an absolute path
         type=lambda p: Path(p).resolve(),
     )
+    parser.add_argument(
+        "--number", "-n", default=10, help="number of conversation", type=int
+    )
     args = parser.parse_args()
-    print(f"Analyzing messages from {args.inbox}")
-    analyze_messages(args.inbox)
+    print(f"Analyzing top {args.number} messages from {args.inbox}")
+    analyze_messages(args.inbox, args.number)
 
 
 if __name__ == "__main__":
