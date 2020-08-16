@@ -60,7 +60,6 @@ def analyze_messages(inbox_path, number_conversations):
         color=(0.1, 0.1, 0.1, 0.1),
         edgecolor="blue",
     )
-
     for bar in bars:
         yval = bar.get_height()
         plt.text(bar.get_x() + bar.get_width()/2, yval * 1.015, yval, ha='center', size=8)
