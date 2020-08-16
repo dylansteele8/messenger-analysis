@@ -53,13 +53,18 @@ def analyze_messages(inbox_path, number_conversations):
     )
     plt.yticks(size=8)
     plt.xticks(size=8, rotation=25, ha="right")
-    plt.bar(
+    bars = plt.bar(
         nlargest_messages[0],
         nlargest_messages[1],
         width=0.7,
         color=(0.1, 0.1, 0.1, 0.1),
         edgecolor="blue",
     )
+
+    for bar in bars:
+        yval = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width()/2, yval * 1.015, yval, ha='center', size=8)
+    plt.tight_layout()
     plt.show()
 
 
