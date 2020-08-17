@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from heapq import nlargest
 from collections import defaultdict
+import pandas as pd
 
 # messages/inbox
 #  |- DylanSteele (folder)
@@ -60,11 +61,25 @@ def analyze_messages(inbox_path, number_conversations):
         color=(0.1, 0.1, 0.1, 0.1),
         edgecolor="blue",
     )
+
+    y_offset = max(nlargest_messages[1]) * 0.015
     for bar in bars:
         yval = bar.get_height()
-        plt.text(bar.get_x() + bar.get_width()/2, yval * 1.015, yval, ha='center', size=8)
+        plt.text(
+            bar.get_x() + bar.get_width() / 2,
+            yval + y_offset,
+            f"{yval:,}",
+            ha="center",
+            size=8,
+        )
     plt.tight_layout()
     plt.show()
+
+    #for bar in bars:
+    #    yval = bar.get_height()
+    #    plt.text(bar.get_x() + bar.get_width()/2, yval * 1.015, yval, ha='center', size=8)
+    #plt.tight_layout()
+    #plt.show()
 
 
 def main():
