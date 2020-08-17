@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from heapq import nlargest
 from collections import defaultdict
-import pandas as pd
 
 # messages/inbox
 #  |- DylanSteele (folder)
